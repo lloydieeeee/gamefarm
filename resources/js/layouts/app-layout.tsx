@@ -1,4 +1,6 @@
-import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
+import { useAdminRoute } from '@/hooks/use-admin-route';
+import AppHeaderLayout from '@/layouts/app/app-header-layout';
+import AppSidebarLayout from '@/layouts/app/app-sidebar-layout';
 import type { BreadcrumbItem } from '@/types';
 
 export default function AppLayout({
@@ -8,9 +10,15 @@ export default function AppLayout({
     breadcrumbs?: BreadcrumbItem[];
     children: React.ReactNode;
 }) {
-    return (
-        <AppLayoutTemplate breadcrumbs={breadcrumbs}>
+    const isAdminRoute = useAdminRoute();
+
+    return isAdminRoute ? (
+        <AppSidebarLayout breadcrumbs={breadcrumbs}>
             {children}
-        </AppLayoutTemplate>
+        </AppSidebarLayout>
+    ) : (
+        <AppHeaderLayout breadcrumbs={breadcrumbs}>
+            {children}
+        </AppHeaderLayout>
     );
 }

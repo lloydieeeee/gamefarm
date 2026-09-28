@@ -1,12 +1,15 @@
 import { Form, Head } from '@inertiajs/react';
 import { useRef } from 'react';
+import AdminSecurityController from '@/actions/App/Http/Controllers/Settings/AdminSecurityController';
 import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { edit } from '@/routes/security';
+import { edit as adminEdit } from '@/routes/admin/security';
+import { edit as userEdit } from '@/routes/security';
+import { useAdminRoute } from '@/hooks/use-admin-route';
 
 // oxfmt-ignore
 type Props = {
@@ -16,6 +19,7 @@ type Props = {
 export default function Security(props: Props) {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
+    const isAdminRoute = useAdminRoute()
 
     return (
         <>
@@ -31,7 +35,7 @@ export default function Security(props: Props) {
                 />
 
                 <Form
-                    {...SecurityController.update.form()}
+                    {...(isAdminRoute ? AdminSecurityController.update.form() :SecurityController.update.form())}
                     options={{
                         preserveScroll: true,
                     }}
@@ -126,7 +130,7 @@ Security.layout = {
     breadcrumbs: [
         {
             title: 'Security settings',
-            href: edit(),
+            href: window.location.pathname.includes('/admin') ? adminEdit() : userEdit(),
         },
     ],
 };

@@ -1,5 +1,6 @@
 import { Form, Head, usePage } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
+import AdminProfileController from '@/actions/App/Http/Controllers/Settings/AdminProfileController';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/delete-user';
 import Heading from '@/components/heading';
@@ -7,9 +8,11 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { edit } from '@/routes/profile';
+import { edit as adminEdit } from '@/routes/admin/profile';
+import { edit as userEdit } from '@/routes/profile';
 import type { Auth } from '@/types';
 import { send } from '@/routes/verification';
+import { useAdminRoute } from '@/hooks/use-admin-route';
 
 type PageProps = {
     auth: Auth;
@@ -23,6 +26,7 @@ export default function Profile({
     status?: string;
 }) {
     const { auth } = usePage<PageProps>().props;
+    const isAdminRoute = useAdminRoute()
 
     return (
         <>
@@ -38,7 +42,7 @@ export default function Profile({
                 />
 
                 <Form
-                    {...ProfileController.update.form()}
+                    {...(isAdminRoute ? AdminProfileController.update.form() : ProfileController.update.form())}
                     options={{
                         preserveScroll: true,
                     }}
@@ -132,7 +136,7 @@ Profile.layout = {
     breadcrumbs: [
         {
             title: 'Profile settings',
-            href: edit(),
+            href: window.location.pathname.includes('/admin') ? adminEdit() : userEdit(),
         },
     ],
 };

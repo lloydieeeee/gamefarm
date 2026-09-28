@@ -8,8 +8,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { register } from '@/routes';
-import { store } from '@/routes/login';
-import { request } from '@/routes/password';
+import { store as adminStore } from '@/routes/admin/login';
+import { store as userStore } from '@/routes/login';
+import { request as adminRequest } from '@/routes/admin/password';
+import { request as userRequest } from '@/routes/password';
+import { useAdminRoute } from '@/hooks/use-admin-route';
 
 type Props = {
     status?: string;
@@ -17,12 +20,14 @@ type Props = {
 };
 
 export default function Login({ status, canResetPassword }: Props) {
+    const isAdminRoute = useAdminRoute();
+
     return (
         <>
             <Head title="Log in" />
 
             <Form
-                {...store.form()}
+                {...(isAdminRoute ? adminStore.form() : userStore.form())}
                 resetOnSuccess={['password']}
                 className="flex flex-col gap-6"
             >
@@ -49,7 +54,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                     <Label htmlFor="password">Password</Label>
                                     {canResetPassword && (
                                         <TextLink
-                                            href={request()}
+                                            href={isAdminRoute ? adminRequest() : userRequest()}
                                             className="ml-auto text-sm"
                                             tabIndex={5}
                                         >
@@ -89,12 +94,14 @@ export default function Login({ status, canResetPassword }: Props) {
                             </Button>
                         </div>
 
-                        <div className="text-center text-sm text-muted-foreground">
-                            Don't have an account?{' '}
-                            <TextLink href={register()} tabIndex={5}>
-                                Sign up
-                            </TextLink>
-                        </div>
+                        {!isAdminRoute && (
+                            <div className="text-center text-sm text-muted-foreground">
+                                Don't have an account?{' '}
+                                <TextLink href={register()} tabIndex={5}>
+                                    Sign up
+                                </TextLink>
+                            </div>
+                        )}
                     </>
                 )}
             </Form>

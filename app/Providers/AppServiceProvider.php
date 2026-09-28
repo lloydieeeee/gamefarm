@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -24,6 +25,23 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        ResetPassword::createUrlUsing(function ($user, string $token): string {
+            $email = $user->getEmailForPasswordReset();
+
+            if ($user instanceof \App\Models\Admin)
+            {
+                return route('admin.password.reset', [
+                    'token' => $token,
+                    'email' => $email
+                ]);
+            }
+
+            return route('password.reset', [
+                'token' => $token,
+                'email' => $email
+            ]);
+        });
     }
 
     /**

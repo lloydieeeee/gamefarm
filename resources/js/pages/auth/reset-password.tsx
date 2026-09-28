@@ -5,7 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { update } from '@/routes/password';
+import { update as adminUpdate } from '@/routes/admin/password';
+import { update as userUpdate } from '@/routes/password';
+import { useAdminRoute } from '@/hooks/use-admin-route';
 
 type Props = {
     token: string;
@@ -14,12 +16,14 @@ type Props = {
 };
 
 export default function ResetPassword({ token, email, passwordRules }: Props) {
+    const isAdminRoute = useAdminRoute();
+
     return (
         <>
             <Head title="Reset password" />
 
             <Form
-                {...update.form()}
+                {...(isAdminRoute ? adminUpdate.form() : userUpdate.form())}
                 transform={(data) => ({ ...data, token, email })}
                 resetOnSuccess={['password', 'password_confirmation']}
             >

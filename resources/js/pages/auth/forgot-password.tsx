@@ -6,10 +6,15 @@ import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { login } from '@/routes';
-import { email } from '@/routes/password';
+import { login as adminLogin } from '@/routes/admin';
+import { login as userLogin } from '@/routes';
+import { email as adminEmail } from '@/routes/admin/password';
+import { email as userEmail } from '@/routes/password';
+import { useAdminRoute } from '@/hooks/use-admin-route';
 
 export default function ForgotPassword({ status }: { status?: string }) {
+    const isAdminRoute = useAdminRoute();
+
     return (
         <>
             <Head title="Forgot password" />
@@ -21,7 +26,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
             )}
 
             <div className="space-y-6">
-                <Form {...email.form()}>
+                <Form {...(isAdminRoute ? adminEmail.form() : userEmail.form())}>
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
@@ -56,7 +61,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
                 <div className="space-x-1 text-center text-sm text-muted-foreground">
                     <span>Or, return to</span>
-                    <TextLink href={login()}>log in</TextLink>
+                    <TextLink href={isAdminRoute ? adminLogin() : userLogin()}>log in</TextLink>
                 </div>
             </div>
         </>

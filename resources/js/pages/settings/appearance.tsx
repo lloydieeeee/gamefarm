@@ -1,7 +1,8 @@
 import { Head } from '@inertiajs/react';
 import AppearanceTabs from '@/components/appearance-tabs';
 import Heading from '@/components/heading';
-import { edit as editAppearance } from '@/routes/appearance';
+import { edit as adminEditAppearance } from '@/routes/admin/appearance';
+import { edit as userEditAppearance } from '@/routes/appearance';
 
 export default function Appearance() {
     return (
@@ -26,7 +27,7 @@ Appearance.layout = {
     breadcrumbs: [
         {
             title: 'Appearance settings',
-            href: editAppearance(),
+            href: window.location.pathname.includes('/admin') ? adminEditAppearance() : userEditAppearance(),
         },
     ],
 };

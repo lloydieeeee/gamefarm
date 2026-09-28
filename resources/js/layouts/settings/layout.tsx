@@ -5,31 +5,37 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { cn, toUrl } from '@/lib/utils';
-import { edit as editAppearance } from '@/routes/appearance';
-import { edit } from '@/routes/profile';
-import { edit as editSecurity } from '@/routes/security';
+import { edit as adminEditAppearance } from '@/routes/admin/appearance';
+import { edit as userEditAppearance } from '@/routes/appearance';
+import { edit as adminEditProfile } from '@/routes/admin/profile';
+import { edit as userEditProfile } from '@/routes/profile';
+import { edit as adminEditSecurity } from '@/routes/admin/security';
+import { edit as userEditSecurity } from '@/routes/security';
 import type { NavItem } from '@/types';
+import { useAdminRoute } from '@/hooks/use-admin-route';
 
-const sidebarNavItems: NavItem[] = [
+const getSidebarNavItems = (isAdminRoute: boolean): NavItem[] => [
     {
         title: 'Profile',
-        href: edit(),
+        href: isAdminRoute ? adminEditProfile() : userEditProfile(),
         icon: null,
     },
     {
         title: 'Security',
-        href: editSecurity(),
+        href: isAdminRoute ? adminEditSecurity() : userEditSecurity(),
         icon: null,
     },
     {
         title: 'Appearance',
-        href: editAppearance(),
+        href: isAdminRoute ? adminEditAppearance() : userEditAppearance(),
         icon: null,
     },
 ];
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
     const { isCurrentOrParentUrl } = useCurrentUrl();
+    const isAdminRoute = useAdminRoute();
+    const sidebarNavItems = getSidebarNavItems(isAdminRoute);
 
     return (
         <div className="px-4 py-6">

@@ -1,5 +1,6 @@
 import { Form } from '@inertiajs/react';
 import { useRef } from 'react';
+import AdminProfileController from '@/actions/App/Http/Controllers/Settings/AdminProfileController';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
@@ -15,9 +16,11 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { useAdminRoute } from '@/hooks/use-admin-route';
 
 export default function DeleteUser() {
     const passwordInput = useRef<HTMLInputElement>(null);
+    const isAdminRoute = useAdminRoute();
 
     return (
         <div className="space-y-6">
@@ -55,7 +58,7 @@ export default function DeleteUser() {
                         </DialogDescription>
 
                         <Form
-                            {...ProfileController.destroy.form()}
+                            {...(isAdminRoute ? AdminProfileController.destroy.form() : ProfileController.destroy.form())}
                             options={{
                                 preserveScroll: true,
                             }}

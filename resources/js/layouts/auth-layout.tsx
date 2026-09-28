@@ -1,4 +1,6 @@
-import AuthLayoutTemplate from '@/layouts/auth/auth-simple-layout';
+import { useAdminRoute } from '@/hooks/use-admin-route';
+import AuthCardLayout from '@/layouts/auth/auth-card-layout';
+import AuthSplitLayout from '@/layouts/auth/auth-split-layout';
 
 export default function AuthLayout({
     title = '',
@@ -9,9 +11,15 @@ export default function AuthLayout({
     description?: string;
     children: React.ReactNode;
 }) {
-    return (
-        <AuthLayoutTemplate title={title} description={description}>
+    const isAdminRoute = useAdminRoute();
+
+    return isAdminRoute ? (
+        <AuthCardLayout title={title} description={description}>
             {children}
-        </AuthLayoutTemplate>
+        </AuthCardLayout>
+    ) : (
+        <AuthSplitLayout title={title} description={description}>
+            {children}
+        </AuthSplitLayout>
     );
 }
