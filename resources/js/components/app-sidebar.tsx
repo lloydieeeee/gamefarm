@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import { Bird, BookOpen, CalendarDays, Egg, FolderGit2, LayoutGrid } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -14,6 +14,9 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes/admin';
+import { index as appointments } from '@/routes/admin/appointments';
+import { index as gamecocks } from '@/routes/admin/gamecocks';
+import { index as maturities } from '@/routes/admin/maturities';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -22,18 +25,20 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
-];
-
-const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
+        title: 'Appointments',
+        href: appointments(),
+        icon: CalendarDays,
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
+        title: 'Gamecocks',
+        href: gamecocks(),
+        icon: Egg,
+    },
+    {
+        title: 'Maturities',
+        href: maturities(),
+        icon: Bird,
     },
 ];
 
@@ -43,11 +48,11 @@ export function AppSidebar() {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
+                        <SidebarMenuButton size="lg" render={
                             <Link href={dashboard()} prefetch>
                                 <AppLogo />
                             </Link>
-                        </SidebarMenuButton>
+                        } />
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
@@ -57,7 +62,6 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

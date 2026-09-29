@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\AdminPaymentController;
+use App\Http\Controllers\Appointment\AdminAppointmentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Gamecock\AdminGamecockController;
+use App\Http\Controllers\Gamecock\GamecockController;
+use App\Http\Controllers\Maturity\AdminMaturityController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:admin')->group(function () {
@@ -32,8 +36,47 @@ Route::middleware('guest:admin')->group(function () {
 Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::inertia('admin/dashboard', 'dashboard')->name('admin.dashboard');
 
+    Route::get('admin/appointments', [AdminAppointmentController::class, 'index'])
+        ->name('admin.appointments.index');
+
     Route::get('admin/gamecocks', [AdminGamecockController::class, 'index'])
         ->name('admin.gamecocks.index');
+
+    Route::get('admin/gamecocks/create', [AdminGamecockController::class, 'create'])
+        ->name('admin.gamecocks.create');
+
+    Route::post('admin/gamecocks', [AdminGamecockController::class, 'store'])
+        ->name('admin.gamecocks.store');
+
+    Route::get('admin/gamecocks/{gamecock}/edit', [AdminGamecockController::class, 'edit'])
+        ->name('admin.gamecocks.edit');
+        
+    Route::patch('admin/gamecocks/{gamecock}', [AdminGamecockController::class, 'update'])
+        ->name('admin.gamecocks.update');
+
+    Route::delete('admin/gamecocks/{gamecock}', [AdminGamecockController::class, 'destroy'])
+        ->name('admin.gamecocks.destroy');
+
+    Route::get('admin/maturities', [AdminMaturityController::class, 'index'])
+        ->name('admin.maturities.index');
+
+    Route::get('admin/maturities/create', [AdminMaturityController::class, 'create'])
+        ->name('admin.maturities.create');
+
+    Route::post('admin/maturities', [AdminMaturityController::class, 'store'])
+        ->name('admin.maturities.store');
+
+    Route::get('admin/maturities/{maturity}/edit', [AdminMaturityController::class, 'edit'])
+        ->name('admin.maturities.edit');
+        
+    Route::patch('admin/maturities/{maturity}', [AdminMaturityController::class, 'update'])
+        ->name('admin.maturities.update');
+
+    Route::delete('admin/maturities/{maturity}', [AdminMaturityController::class, 'destroy'])
+        ->name('admin.maturities.destroy');
+
+    Route::get('admin/payments', [AdminPaymentController::class, 'index'])
+        ->name('admin.payments.index');
 
     Route::get('admin/confirm-password', [ConfirmablePasswordController::class, 'show'])
         ->name('admin.password.confirm');
@@ -45,5 +88,7 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
 });
 
 Route::inertia('/', 'home')->name('home');
+
+Route::get('gamecocks', [GamecockController::class, 'index'])->name('gamecocks');
 
 require __DIR__.'/settings.php';
