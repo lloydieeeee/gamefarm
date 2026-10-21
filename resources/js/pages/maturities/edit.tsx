@@ -11,10 +11,10 @@ interface MaturityProps {
     maturity: Maturity;
 }
 
-export default function EditMaturities({ maturity }: MaturityProps) {
+export default function EditMaturity({ maturity }: MaturityProps) {
     return (
         <>
-            <Head title="Update Maturities" />
+            <Head title="Update Maturity" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="mt-20 space-y-2 px-6 lg:px-8">
                     <Form method="POST" action={store()}>
@@ -26,7 +26,6 @@ export default function EditMaturities({ maturity }: MaturityProps) {
                                         id="name"
                                         name="maturity_name"
                                         defaultValue={maturity.maturity_name}
-                                        autoComplete="off"
                                     />
                                     <InputError
                                         message={errors.maturity_name}
@@ -84,14 +83,14 @@ export default function EditMaturities({ maturity }: MaturityProps) {
     );
 }
 
-EditMaturities.layout = {
+EditMaturity.layout = {
     breadcrumbs: [
         {
             title: "Maturities",
             href: index(),
         },
         {
-            title: "Update Maturities",
+            title: "Update Maturity",
             href: "#",
         },
     ],

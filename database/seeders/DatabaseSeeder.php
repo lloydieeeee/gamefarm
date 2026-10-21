@@ -24,5 +24,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@email.com',
         ]);
+
+        $this->call([
+            BloodlineSeeder::class,
+            MaturitySeeder::class,
+            GamecockSeeder::class,
+        ]);
     }
 }

@@ -39,6 +39,7 @@ class AdminMaturityController extends Controller
         ], [
             'maturity_name.required' => 'The maturity name field is required.',
             'maturity_name.unique' => 'The maturity name has already been taken.',
+            'maturity_name.max' => 'The maturity name field must not exceed :max characters.',
             'maturity_min_age.required' => 'The maturity min age field is required.',
             'maturity_min_age.numeric' => 'The maturiy min age field must be a number.',
             'maturity_max_age.required' => 'The maturity max age field is required.',

@@ -6,10 +6,10 @@ import { Spinner } from "@/components/ui/spinner";
 import { index, store } from "@/routes/admin/maturities";
 import { Form, Head, Link } from "@inertiajs/react";
 
-export default function CreateMaturities() {
+export default function CreateMaturity() {
     return (
         <>
-            <Head title="Add Maturities" />
+            <Head title="Add Maturity" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="mt-20 space-y-2 px-6 lg:px-8">
                     <Form method="POST" action={store()}>
@@ -20,7 +20,6 @@ export default function CreateMaturities() {
                                     <Input
                                         id="name"
                                         name="maturity_name"
-                                        autoComplete="off"
                                     />
                                     <InputError
                                         message={errors.maturity_name}
@@ -76,14 +75,14 @@ export default function CreateMaturities() {
     );
 }
 
-CreateMaturities.layout = {
+CreateMaturity.layout = {
     breadcrumbs: [
         {
             title: "Maturities",
             href: index(),
         },
         {
-            title: "Add Maturities",
+            title: "Add Maturity",
             href: "#",
         },
     ],

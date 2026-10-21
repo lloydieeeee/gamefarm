@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('gamecocks', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('bloodline_id')->constrained();
             $table->foreignId('maturity_id')->constrained();
             $table->foreignId('payment_id')->nullable()->constrained();
-            $table->string('gamecock_bloodline');
             $table->string('gamecock_image')->nullable();
             $table->string('gamecock_hatch_date');
             $table->string('gamecock_price');
-            $table->string('gamecock_status');
+            $table->string('gamecock_status')->default('available');
             $table->string('gamecock_weight');
             $table->timestamps();
         });

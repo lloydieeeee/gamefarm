@@ -1,7 +1,6 @@
 import { Link } from '@inertiajs/react';
-import { Bird, BookOpen, CalendarDays, Egg, FolderGit2, LayoutGrid } from 'lucide-react';
+import { BicepsFlexed, Bird, CalendarDays, Dna, LayoutGrid } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -15,6 +14,7 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes/admin';
 import { index as appointments } from '@/routes/admin/appointments';
+import { index as bloodlines } from '@/routes/admin/bloodlines';
 import { index as gamecocks } from '@/routes/admin/gamecocks';
 import { index as maturities } from '@/routes/admin/maturities';
 import type { NavItem } from '@/types';
@@ -31,14 +31,19 @@ const mainNavItems: NavItem[] = [
         icon: CalendarDays,
     },
     {
+        title: 'Bloodlines',
+        href: bloodlines(),
+        icon: Dna,
+    },
+    {
         title: 'Gamecocks',
         href: gamecocks(),
-        icon: Egg,
+        icon: Bird,
     },
     {
         title: 'Maturities',
         href: maturities(),
-        icon: Bird,
+        icon: BicepsFlexed,
     },
 ];
 

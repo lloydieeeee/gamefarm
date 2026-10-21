@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('gamecock_id')->constrained();
             $table->dateTime('appointment_start_at');
             $table->dateTime('appointment_end_at');
-            $table->string('appointment_status');
+            $table->string('appointment_status')->default('pending');
             $table->string('appointment_purpose');
             $table->timestamps();
         });

@@ -1,4 +1,4 @@
-import { createColumnHelper, Row } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 
 import { type DataTableFeatures } from "./data-table-features";
 import {
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { Link } from "@inertiajs/react";
 import { destroy, edit } from "@/routes/admin/maturities";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -42,10 +43,20 @@ export const columns = columnHelper.columns([
         header: "Maturity Name",
     }),
     columnHelper.accessor("maturity_min_age", {
-        header: "Maturity Min Months",
+        header: "Maturity Min Age",
+        cell: ({ row }) => {
+            const maturity = row.original;
+
+            return <div>{maturity.maturity_min_age} {maturity.maturity_min_age !== 1 ? "mos." : "mo."}</div>;
+        },
     }),
     columnHelper.accessor("maturity_max_age", {
-        header: "Maturity Max Months",
+        header: "Maturity Max Age",
+        cell: ({ row }) => {
+            const maturity = row.original;
+
+            return <div>{maturity.maturity_max_age} {maturity.maturity_max_age !== 1 ? "mos." : "mo."}</div>;
+        },
     }),
     columnHelper.accessor("created_at", {
         header: "Created At",
@@ -76,15 +87,19 @@ export const columns = columnHelper.columns([
                         <span className="sr-only">Open menu</span>
                         <MoreHorizontal className="h-4 w-4" />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
+                    <DropdownMenuContent className="w-40" align="start">
                         <DropdownMenuGroup>
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem render={
+                            <DropdownMenuItem nativeButton={false} render={
                                 <Link href={edit(maturity.id)}>Update</Link>
                             } />
-                            <DropdownMenuItem render={
-                                <Link href={destroy(maturity.id)}>Delete</Link>
-                            } />
+                            <DropdownMenuItem
+                                variant="destructive"
+                                nativeButton
+                                render={
+                                    <Link href={destroy(maturity.id)} className="w-full">Delete</Link>
+                                }
+                            />
                         </DropdownMenuGroup>
                     </DropdownMenuContent>
                 </DropdownMenu>

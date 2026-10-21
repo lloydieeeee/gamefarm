@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Gamecock;
 
+use App\Enums\AppointmentPurpose;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Gamecock;
 use Inertia\Inertia;
 
 class GamecockController extends Controller
@@ -13,6 +14,12 @@ class GamecockController extends Controller
      */
     public function index()
     {
-        return Inertia::render('gamecocks');
+        $gamecocks = Gamecock::with(['bloodline', 'maturity'])->where('gamecock_status', 'available')->get();
+        $appointment_purposes = AppointmentPurpose::options();
+
+        return Inertia::render('gamecocks', [
+            'gamecocks' => $gamecocks,
+            'appointment_purposes' => $appointment_purposes
+        ]);
     }
 }

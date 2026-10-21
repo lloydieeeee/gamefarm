@@ -129,17 +129,17 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                                     item.href,
                                                     activeItemStyles,
                                                 ),
-                                                'h-9 cursor-pointer px-3',
+                                                "h-9 cursor-pointer px-3",
+                                                "group/nav-item relative inline-block transition-all duration-300 ease-out hover:text-emerald-900 hover:-translate-y-1 hover:scale-105 hover:font-semibold data-[status=active]:text-emerald-900 data-[status=active]:-translate-y-1 data-[status=active]:scale-105 data-[status=active]:font-semibold"
+
                                             )}
                                         >
                                             {item.icon && (
                                                 <item.icon className="mr-2 h-4 w-4" />
                                             )}
                                             {item.title}
+                                            <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-yellow-300 transition-all duration-300 ease-out group-hover/nav-item:w-1/2 group-data-[status=active]/nav-item:w-1/2" />
                                         </Link>
-                                        {isCurrentUrl(item.href) && (
-                                            <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
-                                        )}
                                     </NavigationMenuItem>
                                 ))}
                             </NavigationMenuList>

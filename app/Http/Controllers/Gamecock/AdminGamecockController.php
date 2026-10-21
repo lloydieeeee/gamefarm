@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Gamecock;
 
+use App\Enums\GamecockStatus;
 use App\Http\Controllers\Controller;
+use App\Models\Bloodline;
 use App\Models\Gamecock;
+use App\Models\Maturity;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -24,7 +27,11 @@ class AdminGamecockController extends Controller
      */
     public function create()
     {
-        return Inertia::render('gamecocks/create');
+        return Inertia::render('gamecocks/create', [
+            'bloodlines' => Bloodline::all(),
+            'maturities' => Maturity::all(),
+            'gamecock_statuses' => GamecockStatus::options()
+        ]);
     }
 
     /**
@@ -33,17 +40,32 @@ class AdminGamecockController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'gamecock_hatch_date' => ['required', 'unique:maturities,maturity_name', 'max:50'],
+            'bloodline_id' => ['required', 'integer', 'exists:bloodlines,id'],
+            'maturity_id' => ['required', 'integer', 'exists:maturities,id'],
+            'gamecock_hatch_date' => ['required'],
             'gamecock_weight' => ['required', 'numeric'],
             'gamecock_price' => ['required', 'numeric'],
+            'gamecock_status' => ['required', 'max:50'],
+            'gamecock_image' => ['nullable', 'image', 'mimetypes:image/*', 'max:2048'],
         ], [
-            'maturity_name.required' => 'The maturity name field is required.',
-            'maturity_name.unique' => 'The maturity name has already been taken.',
-            'maturity_min_age.required' => 'The maturity min age field is required.',
-            'maturity_min_age.numeric' => 'The maturiy min age field must be a number.',
-            'maturity_max_age.required' => 'The maturity max age field is required.',
-            'maturity_max_age.numeric' => 'The maturity max age field must be a number.',
+            'bloodline_id.required' => 'The gamecock bloodline field is required.',
+            'maturity_id.required' => 'The gamecock maturity field is required.',
+            'gamecock_hatch_date.required' => 'The gamecock hatch date field is required.',
+            'gamecock_weight.required' => 'The gamecock weight field is required.',
+            'gamecock_weight.numeric' => 'The gamecock weight field must be a number.',
+            'gamecock_price.required' => 'The gamecock price field is required.',
+            'gamecock_price.numeric' => 'The gamecock price field must be a number.',
+            'gamecock_status.required' => 'The gamecock price field is required.',
+            'gamecock_status.max' => 'The gamecock price field must not exceed :max characters.',
         ]);
+
+        if ($request->hasFile('gamecock_image')) {
+            $file = $request->file('gamecock_image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+
+            $path = $file->storeAs('images', $filename, 'public');
+            $validated['gamecock_image'] = '/storage/' . $path;
+        }
 
         Gamecock::create($validated);
 
@@ -55,7 +77,12 @@ class AdminGamecockController extends Controller
      */
     public function edit(Gamecock $gamecock)
     {
-        //
+        return Inertia::render('gamecocks/edit', [
+            'bloodlines' => Bloodline::all(),
+            'maturities' => Maturity::all(),
+            'gamecock' => $gamecock,
+            'gamecock_statuses' => GamecockStatus::options()
+        ]);
     }
 
     /**
